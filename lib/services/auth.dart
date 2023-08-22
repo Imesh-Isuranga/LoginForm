@@ -6,14 +6,15 @@ class AuthServices {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //create a user from firebase user with uid
-  UserModel? _userWithFirebaseUserUid(User? user) {
+  UserModel? _userWithFirebaseUserUid(User? user){
     return user != null ? UserModel(uid: user.uid) : null;
   }
 
   //create the stream for checking the auth changes in the user
-  Stream<UserModel?> get user {
+  Stream<UserModel?>get user{
     return _auth.authStateChanges().map(_userWithFirebaseUserUid);
   }
+
 
   //Sign in anonymous
   Future signInAnonymously() async {
@@ -28,25 +29,22 @@ class AuthServices {
   }
 
   //register using email and password
-  Future registerWithEmailAndPassword(String email, String password) async {
+  Future registerWithEmailAndPassword(String email,String password) async{
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
-
       return _userWithFirebaseUserUid(user);
     } catch (err) {
       print(err.toString());
       return null;
     }
   }
+
 
   //signin using email and password
-
-  Future signInUsingEmailAndPassword(String email, String password) async {
+  Future signInUsingEmailAndPassword(String email,String password) async{
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(
-          email: email, password: password);
+      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       return _userWithFirebaseUserUid(user);
     } catch (err) {
@@ -54,11 +52,12 @@ class AuthServices {
       return null;
     }
   }
+
 
   //sign in using gmail
 
   //signout
-  Future signOut() async {
+  Future signOut() async{
     try {
       return await _auth.signOut();
     } catch (err) {
@@ -66,4 +65,5 @@ class AuthServices {
       return null;
     }
   }
+ 
 }
